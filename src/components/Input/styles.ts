@@ -27,7 +27,6 @@ export const Container = styled.div`
       color: #ff9000;
       border-color: #ff9000;
     `}
-
   ${props =>
     props.isFilled &&
     css`
