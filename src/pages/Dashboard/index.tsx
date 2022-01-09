@@ -4,10 +4,11 @@ import { Header } from '../../components/Header';
 import api from '../../services/api';
 import { ModalAddFood } from '../../components/ModalAddFood';
 import { ModalEditFood } from '../../components/ModalEditFood';
+import { Food } from '../../components/Food';
 
 import { FoodsContainer } from './styles';
 
-interface Food {
+interface IFood {
   id: number,
   name: string,
   description: string,
@@ -16,38 +17,48 @@ interface Food {
   image: string,
 }
 
-export function Dashboard(food: Food) {
+interface AddFood {
+  image: string;
+  name: string;
+  price: string;
+  description: string;
+}
 
-  const [foods, setFoods] = useState<Food[]>([]);
+export function Dashboard(food: IFood) {
+
+  const [foods, setFoods] = useState<IFood[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [editingFood, setEditingFood] = useState({});
+  const [editingFood, setEditingFood] = useState<IFood>({} as IFood);
 
   useEffect(() => {
-    api.get("/foods")
-    .then(response => setFoods(response.data));
+    async function getFood() {
+      const response = await api.get("/foods");
+      setFoods(response.data);
+    }
+    getFood();
   }, []);
 
-  async function handleAddFood(food: Food) {
+  async function handleAddFood(food: AddFood): Promise<void> {
     try {
       const response = await api.post('/foods', {
         ...food,
         available: true,
       });
-  
+
       setFoods([...foods, response.data]);
     } catch (err) {
       console.log(err);
     }
   };
 
-  async function handleUpdateFood(food: Food, editingFood: Food) {
+  async function handleUpdateFood(food: AddFood): Promise<void> {
     try {
       const foodUpdated = await api.put(
         `/foods/${editingFood.id}`,
         { ...editingFood, ...food },
       );
-  
+
       const foodsUpdated = foods.map(f =>
         f.id !== foodUpdated.data.id ? f : foodUpdated.data,
       );
@@ -59,11 +70,11 @@ export function Dashboard(food: Food) {
   };
 
   async function handleDeleteFood(id: number) {
-  
+
     await api.delete(`/foods/${id}`);
-  
+
     const foodsFiltered = foods.filter(food => food.id !== id);
-  
+
     setFoods(foodsFiltered);
   };
 
@@ -75,7 +86,7 @@ export function Dashboard(food: Food) {
     setEditModalOpen(!editModalOpen);
   };
 
-  function handleEditFood(food: Food) {
+  function handleEditFood(food: IFood) {
     setEditingFood(food);
     setEditModalOpen(true);
   };

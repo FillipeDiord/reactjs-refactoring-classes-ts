@@ -1,4 +1,4 @@
-import { createRef, useState } from 'react';
+import { useRef } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
 
 import { Form } from './styles';
@@ -14,13 +14,26 @@ interface Food {
   image: string,
 }
 
-export function ModalEditFood() {
-  formRef = createRef();
-  const [isOpen, setIsOpen] = useState(false);
+interface AddFood {
+  name: string;
+  description: string;
+  price: string;
+  image: string;
+}
 
-  async function handleSubmit(data: Food) {
+interface ModalEditFoodProps {
+  setIsOpen: () => void;
+  isOpen: boolean;
+  handleUpdateFood: (data: AddFood) => void;
+  editingFood: Food;
+}
+
+export function ModalEditFood({ isOpen, setIsOpen, editingFood, handleUpdateFood }: ModalEditFoodProps) {
+  const formRef = useRef(null);
+
+  async function handleSubmit(data: AddFood) {
     handleUpdateFood(data);
-    setIsOpen(false);
+    setIsOpen();
   };
 
   return (

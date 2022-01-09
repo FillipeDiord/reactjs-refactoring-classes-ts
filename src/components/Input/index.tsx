@@ -3,6 +3,7 @@ import {
   useRef,
   useState,
   useCallback,
+  ElementType,
 } from 'react';
 
 import { useField } from '@unform/core';
@@ -10,13 +11,13 @@ import { useField } from '@unform/core';
 import { Container } from './styles';
 
 interface InputProps {
-  name: string;
-  icon?: string;
-  placeholder: string;
+  name: string,
+  icon?: ElementType,
+  placeholder?: string,
 }
 
-export function Input({ name, icon: Icon, ...rest }: InputProps){
-  const inputRef = useRef(null);
+export function Input({ name, icon: Icon, ...rest }: InputProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
