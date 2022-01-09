@@ -11,9 +11,9 @@ import { useField } from '@unform/core';
 import { Container } from './styles';
 
 interface InputProps {
-  name: string,
-  icon?: ElementType,
-  placeholder?: string,
+  name: string;
+  icon?: ElementType;
+  placeholder?: string;
 }
 
 export function Input({ name, icon: Icon, ...rest }: InputProps) {

@@ -9,12 +9,12 @@ import { Food } from '../../components/Food';
 import { FoodsContainer } from './styles';
 
 interface IFood {
-  id: number,
-  name: string,
-  description: string,
-  price: number,
-  available: boolean,
-  image: string,
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  available: boolean;
+  image: string;
 }
 
 interface AddFood {
